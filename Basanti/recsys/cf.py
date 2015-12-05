@@ -4,6 +4,8 @@ from scipy.sparse import csr_matrix
 import pandas as pd
 from scipy import *
 import time
+import logging
+import datetime
 
 class CachedCfRecommendation:
     def refreshBorrowerVsOccupationFrame(self):
@@ -16,7 +18,7 @@ class CachedCfRecommendation:
 
     def getBorrowerVsOccupationFrame(self):
         if (self.cached_frame is None or time.time() - self.cached_time > self.refresh_interval):
-            print "REFRESH"
+            self.logger.info("DataFrame refreshed at %s", datetime.datetime.now())
             self.cached_frame = self.refreshBorrowerVsOccupationFrame();
         return self.cached_frame
 
@@ -25,8 +27,9 @@ class CachedCfRecommendation:
         return ['42','43']
 
     def __init__(self, configs):
-        self.db = MySQLdb.connect("localhost","root","root","rangde")
+        self.db = MySQLdb.connect(configs["db_host"], configs["db_user"], configs["db_password"], "rangde")
         self.refresh_interval = configs["refresh_interval"]
         self.cached_frame = None
         self.cached_time = time.time()
+        self.logger = logging.getLogger("Rotating Log")
     

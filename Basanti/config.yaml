@@ -1,2 +1,5 @@
 refresh_interval: 900 #15 Minutes
-debug_mode: true
+debug_mode: True
+db_host: localhost
+db_user: root
+db_password: root
