@@ -55,7 +55,7 @@ class CachedCfRecommendation:
 
     def fetch(self, userid):
         final_frame = self.get_cached_frame()
-        return final_frame.ix[int(userid)].to_json()
+        return final_frame.ix[int(userid)].order(ascending=False).nlargest(10).to_json()
 
     def __init__(self, configs):
         self.db = MySQLdb.connect(configs["db_host"], configs["db_user"], configs["db_password"], "rangde")
